@@ -1,1 +1,0 @@
-# yukes-education2024
