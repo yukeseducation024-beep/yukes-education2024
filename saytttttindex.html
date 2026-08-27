@@ -1,0 +1,1097 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>YUKES EDUCATION — Kompyuter Ta'lim Markazi</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+font-family:Inter,Arial,sans-serif;
+background:#050816;color:#eef7ff;
+line-height:1.5;
+overflow-x:hidden;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:root{
+--blue:#00d9ff;--violet:#7c3cff;--green:#19e68c;
+--bg:#050816;--card:#0b1428;--card2:#101c34;
+--text:#eef7ff;--muted:#8da0b9;--border:#1d3556;
+}
+body.light{
+--bg:#f3f7fc;--card:#fff;--card2:#eef4fb;
+--text:#081526;--muted:#607089;--border:#ccd8e7;
+}
+body.light .nav{background:rgba(255,255,255,.85)}
+body.light .hero{background:
+radial-gradient(circle at 50% 40%,#ccefff,transparent 35%),#f3f7fc}
+body.light .gridbg{opacity:.25}
+body.light .course p,body.light .teacher p{color:#607089}
+body.light .modal-box{background:#fff;color:#081526}
+body.light .toast{color:white}
+
+/* LOADER */
+.loader{
+position:fixed;inset:0;background:#020611;z-index:99999;
+display:flex;align-items:center;justify-content:center;
+transition:.7s;
+}
+.loader.hide{opacity:0;visibility:hidden}
+.loader-logo{
+font-size:50px;font-weight:1000;color:var(--blue);
+text-shadow:0 0 30px var(--blue);
+animation:loaderPulse 1s infinite;
+}
+@keyframes loaderPulse{50%{transform:scale(1.08);opacity:.5}}
+
+/* CURSOR */
+.cursor{
+position:fixed;width:18px;height:18px;border:2px solid var(--blue);
+border-radius:50%;pointer-events:none;z-index:100000;
+transform:translate(-50%,-50%);
+box-shadow:0 0 20px var(--blue);
+display:none;
+}
+@media(pointer:fine){.cursor{display:block}}
+
+/* NAV */
+.nav{
+height:74px;position:fixed;top:0;left:0;width:100%;z-index:5000;
+display:flex;align-items:center;justify-content:space-between;
+padding:0 5%;background:rgba(5,8,22,.72);
+backdrop-filter:blur(18px);border-bottom:1px solid var(--border);
+transition:.3s;
+}
+.nav.scrolled{box-shadow:0 10px 40px #0005}
+.logo{font-size:24px;font-weight:1000;letter-spacing:3px;color:var(--blue)}
+.logo small{font-size:9px;display:block;letter-spacing:2px;color:var(--muted)}
+.navlinks{display:flex;gap:20px;list-style:none}
+.navlinks a{font-size:14px;color:var(--muted);transition:.2s}
+.navlinks a:hover,.navlinks a.active{color:var(--blue)}
+.nav-actions{display:flex;gap:8px}
+.iconbtn{
+width:42px;height:42px;border:1px solid var(--border);
+background:var(--card);color:var(--text);border-radius:12px;
+}
+.menu{display:none}
+
+/* HERO */
+.hero{
+min-height:100vh;padding:130px 6% 70px;position:relative;
+display:flex;align-items:center;justify-content:center;text-align:center;
+background:
+radial-gradient(circle at 50% 40%,#006eff35,transparent 30%),
+radial-gradient(circle at 10% 20%,#00eaff15,transparent 25%),
+var(--bg);
+overflow:hidden;
+}
+.gridbg{
+position:absolute;inset:0;opacity:.5;
+background-image:
+linear-gradient(#00d9ff0d 1px,transparent 1px),
+linear-gradient(90deg,#00d9ff0d 1px,transparent 1px);
+background-size:50px 50px;
+transform:perspective(500px) rotateX(60deg) scale(1.7);
+transform-origin:center bottom;
+animation:grid 12s linear infinite;
+}
+@keyframes grid{to{background-position:0 50px}}
+.orb{position:absolute;border-radius:50%;filter:blur(2px);pointer-events:none}
+.o1{width:300px;height:300px;border:1px solid #00d9ff33;animation:spin 20s linear infinite}
+.o2{width:500px;height:500px;border:1px dashed #7c3cff33;animation:spin 30s reverse linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-content{position:relative;z-index:2;max-width:1000px}
+.badge{
+display:inline-flex;padding:9px 17px;border:1px solid #00d9ff66;
+border-radius:30px;color:var(--blue);background:#00d9ff0b;margin-bottom:20px;
+}
+.hero h1{
+font-size:clamp(60px,11vw,130px);line-height:.9;letter-spacing:8px;
+background:linear-gradient(90deg,#008cff,#fff,#00eaff,#fff,#008cff);
+background-size:300%;-webkit-background-clip:text;color:transparent;
+animation:shine 4s linear infinite;
+}
+@keyframes shine{to{background-position:300%}}
+.hero h2{font-size:clamp(18px,3vw,32px);letter-spacing:6px;margin:20px 0;color:#bcefff}
+.hero p{max-width:720px;margin:auto;color:var(--muted);font-size:17px}
+.hero-buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{
+border:0;padding:14px 22px;border-radius:13px;font-weight:800;
+transition:.25s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn:hover{transform:translateY(-3px)}
+.primary{background:linear-gradient(135deg,#008cff,#00d9ff);color:white;box-shadow:0 0 30px #00aaff44}
+.secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.green{background:#19e68c;color:#001a0e}
+.danger{background:#ff416c;color:white}
+
+/* SECTIONS */
+section{padding:95px 6%;position:relative}
+.section-head{text-align:center;max-width:760px;margin:0 auto 45px}
+.section-head h2{font-size:42px}
+.section-head p{color:var(--muted);margin-top:8px}
+.line{
+width:80px;height:4px;border-radius:10px;background:linear-gradient(90deg,var(--blue),var(--violet));
+margin:16px auto;
+}
+
+/* SEARCH */
+.searchbar{
+max-width:800px;margin:0 auto 30px;display:flex;gap:10px;
+}
+.searchbar input{
+flex:1;padding:16px 18px;border-radius:14px;border:1px solid var(--border);
+background:var(--card);color:var(--text);outline:none;
+}
+.searchbar input:focus{border-color:var(--blue);box-shadow:0 0 20px #00d9ff18}
+
+/* COURSES */
+.filters{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:25px}
+.filter{
+padding:9px 15px;border:1px solid var(--border);background:var(--card);
+color:var(--muted);border-radius:30px;
+}
+.filter.active,.filter:hover{background:#00d9ff12;color:var(--blue);border-color:var(--blue)}
+.courses{
+max-width:1250px;margin:auto;display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;
+}
+.course{
+background:linear-gradient(145deg,var(--card2),var(--card));
+border:1px solid var(--border);border-radius:22px;padding:25px;
+transition:.35s;position:relative;overflow:hidden;
+}
+.course:hover{transform:translateY(-9px);border-color:#00d9ff88;box-shadow:0 20px 60px #00aaff15}
+.course-icon{
+width:62px;height:62px;border-radius:17px;background:#00d9ff12;
+display:grid;place-items:center;font-size:31px;margin-bottom:18px;
+}
+.course h3{font-size:21px;margin-bottom:8px}
+.course p{color:var(--muted);font-size:14px;min-height:65px}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin:14px 0}
+.tag{font-size:11px;padding:4px 8px;border-radius:20px;background:#7c3cff15;color:#bfa9ff}
+.course-bottom{display:flex;justify-content:space-between;align-items:center}
+.price{font-weight:900;color:var(--blue)}
+.rate{color:#ffd43b}
+
+/* TEACHERS */
+.teachers{
+max-width:1000px;margin:auto;display:grid;
+grid-template-columns:repeat(2,1fr);gap:25px;
+}
+.teacher{
+background:linear-gradient(145deg,var(--card2),var(--card));
+border:1px solid var(--border);border-radius:25px;padding:25px;text-align:center;
+transition:.3s;
+}
+.teacher:hover{transform:translateY(-8px);border-color:var(--blue)}
+.teacher img{
+width:180px;height:180px;object-fit:cover;border-radius:50%;
+border:4px solid var(--blue);box-shadow:0 0 35px #00d9ff33;
+}
+.teacher h3{font-size:24px;margin:16px 0 5px}
+.teacher p{color:var(--muted)}
+.stars{color:#ffd43b;margin:10px}
+
+/* ABOUT */
+.about-wrap{
+max-width:1100px;margin:auto;display:grid;
+grid-template-columns:1fr 1fr;gap:50px;align-items:center;
+}
+.about-wrap h2{font-size:42px}
+.about-wrap p{color:var(--muted);margin:15px 0}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:25px}
+.feature{padding:18px;background:var(--card);border:1px solid var(--border);border-radius:15px}
+.feature b{color:var(--blue);font-size:22px;display:block}
+.pc{
+height:300px;display:grid;place-items:center;position:relative;
+}
+.monitor{
+width:330px;height:210px;border:9px solid #243650;border-radius:18px;
+background:#020814;box-shadow:0 0 50px #00aaff25;display:grid;place-items:center;
+}
+.screen{font-size:50px;color:var(--blue);text-shadow:0 0 20px var(--blue)}
+.stand{width:70px;height:55px;background:#243650}
+.base{position:absolute;bottom:15px;width:170px;height:13px;background:#243650;border-radius:20px}
+
+/* STATS */
+.stats{
+max-width:1100px;margin:auto;display:grid;
+grid-template-columns:repeat(4,1fr);gap:15px;
+}
+.stat{background:var(--card);border:1px solid var(--border);padding:30px;text-align:center;border-radius:20px}
+.stat b{font-size:45px;color:var(--blue)}
+.stat span{display:block;color:var(--muted)}
+
+/* TEST */
+.test-box{
+max-width:850px;margin:auto;background:var(--card);
+border:1px solid var(--border);padding:30px;border-radius:22px;
+}
+.question{font-size:20px;font-weight:bold;margin-bottom:20px}
+.answers{display:grid;gap:10px}
+.answer{
+padding:15px;border:1px solid var(--border);background:var(--card2);
+color:var(--text);border-radius:12px;text-align:left;
+}
+.answer:hover{border-color:var(--blue)}
+.answer.correct{background:#19e68c22;border-color:#19e68c;color:#19e68c}
+.answer.wrong{background:#ff416c22;border-color:#ff416c;color:#ff416c}
+.test-info{display:flex;justify-content:space-between;color:var(--muted);margin-bottom:15px}
+
+/* PROGRESS */
+.progress-wrap{max-width:900px;margin:30px auto;background:var(--card);padding:25px;border:1px solid var(--border);border-radius:20px}
+.progress-bar{height:15px;background:#18283d;border-radius:20px;overflow:hidden}
+.progress-fill{height:100%;width:72%;background:linear-gradient(90deg,var(--blue),var(--violet));transition:1s}
+
+/* FAQ */
+.faq{max-width:900px;margin:auto}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-q{
+width:100%;background:none;color:var(--text);border:0;
+padding:20px 5px;text-align:left;font-weight:bold;display:flex;justify-content:space-between;
+}
+.faq-a{display:none;color:var(--muted);padding:0 5px 20px}
+.faq-item.open .faq-a{display:block}
+
+/* CONTACT */
+.contact-box{
+max-width:800px;margin:auto;padding:35px;border-radius:25px;
+background:linear-gradient(145deg,var(--card2),var(--card));
+border:1px solid var(--border);
+}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:13px;color:var(--muted)}
+.field input,.field textarea,.field select{
+padding:14px;border-radius:12px;border:1px solid var(--border);
+background:var(--bg);color:var(--text);outline:none;
+}
+.field textarea{min-height:120px;resize:vertical}
+
+/* FOOTER */
+footer{
+padding:45px 6%;border-top:1px solid var(--border);background:#020611;
+}
+.footer-grid{
+max-width:1200px;margin:auto;display:grid;
+grid-template-columns:2fr 1fr 1fr 1fr;gap:30px;
+}
+footer p,footer li{color:#71839b;font-size:14px}
+footer ul{list-style:none;display:grid;gap:8px}
+footer h3{margin-bottom:12px;color:white}
+.copy{text-align:center;margin-top:35px;color:#52657c}
+
+/* TOAST */
+.toast{
+position:fixed;right:20px;bottom:20px;z-index:9999;
+padding:15px 20px;border-radius:13px;background:#111e33;
+border:1px solid var(--blue);box-shadow:0 10px 40px #0007;
+transform:translateX(150%);transition:.4s;
+}
+.toast.show{transform:translateX(0)}
+
+/* MODAL */
+.modal{
+position:fixed;inset:0;background:#000b;z-index:8000;
+display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal.show{display:flex}
+.modal-box{
+width:min(600px,100%);background:#0b1428;border:1px solid var(--border);
+border-radius:22px;padding:30px;position:relative;
+}
+.close{
+position:absolute;right:15px;top:15px;border:0;background:none;color:var(--muted);
+font-size:25px;
+}
+
+/* TOP */
+.top{
+position:fixed;right:20px;bottom:20px;width:45px;height:45px;
+border:0;border-radius:50%;background:var(--blue);color:#00121a;
+display:none;z-index:4000;font-weight:bold;
+}
+
+/* RESPONSIVE */
+@media(max-width:850px){
+.navlinks{display:none}
+.menu{display:block}
+.about-wrap{grid-template-columns:1fr}
+.teachers{grid-template-columns:1fr}
+.stats{grid-template-columns:1fr 1fr}
+.footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:550px){
+section{padding:75px 5%}
+.hero{padding-left:4%;padding-right:4%}
+.hero h1{letter-spacing:3px}
+.form-grid{grid-template-columns:1fr}
+.field.full{grid-column:auto}
+.stats{grid-template-columns:1fr 1fr}
+.footer-grid{grid-template-columns:1fr}
+.searchbar{flex-direction:column}
+}
+</style>
+</head>
+
+<body>
+
+<div class="loader">
+<div class="loader-logo">YUKES</div>
+</div>
+
+<div class="cursor"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+<div>
+<div class="logo">YUKES</div>
+<small>EDUCATION</small>
+</div>
+
+<ul class="navlinks">
+<li><a href="#home">Bosh sahifa</a></li>
+<li><a href="#courses">Kurslar</a></li>
+<li><a href="#teachers">Ustozlar</a></li>
+<li><a href="#about">Markaz</a></li>
+<li><a href="#test">Test</a></li>
+<li><a href="#contact">Aloqa</a></li>
+</ul>
+
+<div class="nav-actions">
+<button class="iconbtn" onclick="toggleTheme()">🌙</button>
+<button class="iconbtn menu" onclick="mobileMenu()">☰</button>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+<div class="gridbg"></div>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+
+<div class="hero-content">
+<div class="badge">🚀 Kelajak kasblari shu yerdan boshlanadi</div>
+<h1>YUKES</h1>
+<h2>KOMPYUTER TA'LIM MARKAZI</h2>
+<p>
+Kompyuter savodxonligi, web dasturlash, grafik dizayn,
+sun’iy intellekt, 3D va boshqa zamonaviy yo‘nalishlarni
+amaliy tarzda o‘rganing.
+</p>
+
+<div class="hero-buttons">
+<a href="#courses" class="btn primary">📚 Kurslarni ko‘rish</a>
+<a href="#contact" class="btn secondary">📞 Bog‘lanish</a>
+<button class="btn secondary" onclick="openVideo()">▶ Tanishtiruv</button>
+</div>
+</div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+<div class="section-head">
+<h2>📚 Kurslarimiz</h2>
+<div class="line"></div>
+<p>O‘zingizga mos yo‘nalishni toping va bilim olishni boshlang.</p>
+</div>
+
+<div class="searchbar">
+<input id="courseSearch" oninput="searchCourses()" placeholder="🔎 Kurs qidirish...">
+<button class="btn primary" onclick="clearSearch()">Tozalash</button>
+</div>
+
+<div class="filters">
+<button class="filter active" onclick="filterCourses('all',this)">Barchasi</button>
+<button class="filter" onclick="filterCourses('computer',this)">Kompyuter</button>
+<button class="filter" onclick="filterCourses('design',this)">Dizayn</button>
+<button class="filter" onclick="filterCourses('code',this)">Dasturlash</button>
+<button class="filter" onclick="filterCourses('ai',this)">AI</button>
+</div>
+
+<div class="courses" id="courseList">
+
+<div class="course" data-cat="computer" data-name="kompyuter savodxonligi">
+<div class="course-icon">💻</div>
+<h3>Kompyuter savodxonligi</h3>
+<p>Windows, Word, Excel, PowerPoint, fayllar va internet bilan ishlash.</p>
+<div class="tags"><span class="tag">Boshlang‘ich</span><span class="tag">Amaliy</span></div>
+<div class="course-bottom"><span class="price">Kurs</span><span class="rate">★★★★★</span></div>
+<br><button class="btn primary" onclick="courseInfo('Kompyuter savodxonligi')">Batafsil</button>
+</div>
+
+<div class="course" data-cat="code" data-name="web dasturlash">
+<div class="course-icon">🌐</div>
+<h3>Web dasturlash</h3>
+<p>HTML, CSS va JavaScript yordamida zamonaviy web-saytlar yarating.</p>
+<div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+<div class="course-bottom"><span class="price">Kurs</span><span class="rate">★★★★★</span></div>
+<br><button class="btn primary" onclick="courseInfo('Web dasturlash')">Batafsil</button>
+</div>
+
+<div class="course" data-cat="design" data-name="grafik dizayn">
+<div class="course-icon">🎨</div>
+<h3>Grafik dizayn</h3>
+<p>Photoshop, Illustrator va kreativ dizayn bilan professional ishlash.</p>
+<div class="tags"><span class="tag">Photoshop</span><span class="tag">AI</span></div>
+<div class="course-bottom"><span class="price">Kurs</span><span class="rate">★★★★★</span></div>
+<br><button class="btn primary" onclick="courseInfo('Grafik dizayn')">Batafsil</button>
+</div>
+
+<div class="course" data-cat="ai" data-name="suniy intellekt ai">
+<div class="course-icon">🤖</div>
+<h3>Sun’iy intellekt</h3>
+<p>AI vositalari, promptlar, rasm va video yaratish texnologiyalarini o‘rganing.</p>
+<div class="tags"><span class="tag">AI</span><span class="tag">Prompt</span></div>
+<div class="course-bottom"><span class="price">Kurs</span><span class="rate">★★★★★</span></div>
+<br><button class="btn primary" onclick="courseInfo('Sun’iy intellekt')">Batafsil</button>
+</div>
+
+<div class="course" data-cat="code" data-name="dasturlash">
+<div class="course-icon">👨‍💻</div>
+<h3>Dasturlash</h3>
+<p>Algoritm, mantiq va zamonaviy dasturlash asoslarini amaliy o‘rganing.</p>
+<div class="tags"><span class="tag">Code</span><span class="tag">Logic</span></div>
+<div class="course-bottom"><span class="price">Kurs</span><span class="rate">★★★★★</span></div>
+<br><button class="btn primary" onclick="courseInfo('Dasturlash')">Batafsil</button>
+</div>
+
+<div class="course" data-cat="design" data-name="3d max">
+<div class="course-icon">🧊</div>
+<h3>3D Max</h3>
+<p>3D modellashtirish, obyektlar va vizualizatsiyalar yaratishni o‘rganing.</p>
+<div class="tags"><span class="tag">3D</span><span class="tag">Model</span></div>
+<div class="course-bottom"><span class="price">Kurs</span><span class="rate">★★★★★</span></div>
+<br><button class="btn primary" onclick="courseInfo('3D Max')">Batafsil</button>
+</div>
+
+<div class="course" data-cat="computer" data-name="office">
+<div class="course-icon">📊</div>
+<h3>Microsoft Office</h3>
+<p>Word, Excel va PowerPoint dasturlarida professional ishlash.</p>
+<div class="tags"><span class="tag">Word</span><span class="tag">Excel</span></div>
+<div class="course-bottom"><span class="price">Kurs</span><span class="rate">★★★★★</span></div>
+<br><button class="btn primary" onclick="courseInfo('Microsoft Office')">Batafsil</button>
+</div>
+
+<div class="course" data-cat="design" data-name="mobilografiya">
+<div class="course-icon">📱</div>
+<h3>SMM & Mobilografiya</h3>
+<p>Telefon orqali kreativ kontent, video va ijtimoiy tarmoqlar uchun materiallar.</p>
+<div class="tags"><span class="tag">SMM</span><span class="tag">Video</span></div>
+<div class="course-bottom"><span class="price">Kurs</span><span class="rate">★★★★★</span></div>
+<br><button class="btn primary" onclick="courseInfo('SMM & Mobilografiya')">Batafsil</button>
+</div>
+
+</div>
+</section>
+
+<!-- TEACHERS -->
+<section id="teachers">
+<div class="section-head">
+<h2>👨‍🏫 Ustozlarimiz</h2>
+<div class="line"></div>
+<p>O‘zingizning ustozlaringiz rasmini va ismini quyidagi joylarga qo‘ying.</p>
+</div>
+
+<div class="teachers">
+
+<div class="teacher">
+<img src="1-ustoz.jpg" alt="1-ustoz">
+<h3>SALIMOVA MOHIDIL</h3>
+<div class="stars">★★★★★</div>
+<p>Kompyuter savodxonligi va Web dasturlash</p>
+<br>
+<button class="btn primary" onclick="teacherInfo('Ustoz Ismi')">Profil</button>
+</div>
+
+<div class="teacher">
+<img src="2-ustoz.jpg" alt="1-ustoz">
+<h3>MARUPOV SUNNATILLO</h3>
+<div class="stars">★★★★★</div>
+<p>Grafik dizayn va Sun’iy intellekt</p>
+<br>
+<button class="btn primary" onclick="teacherInfo('Ustoz Ismi')">Profil</button>
+</div>
+
+</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+<div class="about-wrap">
+
+<div>
+<h2>💡 YUKES EDUCATION</h2>
+<div class="line" style="margin-left:0"></div>
+<p>
+Bizning maqsadimiz — o‘quvchilarga zamonaviy
+texnologiyalarni tushunarli va amaliy tarzda o‘rgatish.
+</p>
+<p>
+Har bir dars yangi bilim, yangi tajriba va yangi
+imkoniyat sari qadam.
+</p>
+
+<div class="features">
+<div class="feature"><b>⚡</b>Amaliy darslar</div>
+<div class="feature"><b>🎯</b>Real loyihalar</div>
+<div class="feature"><b>🚀</b>Zamonaviy texnologiya</div>
+<div class="feature"><b>🏆</b>Natijaga yo‘naltirilgan ta’lim</div>
+</div>
+</div>
+
+<div class="pc">
+<div class="monitor">
+<div class="screen">&lt;/&gt;</div>
+</div>
+<div class="stand"></div>
+<div class="base"></div>
+</div>
+
+</div>
+</section>
+
+<!-- STATS -->
+<section>
+<div class="section-head">
+<h2>🏆 YUKES raqamlarda</h2>
+<div class="line"></div>
+</div>
+
+<div class="stats">
+<div class="stat"><b data-count="500">0</b><span>O‘quvchilar</span></div>
+<div class="stat"><b data-count="10">0</b><span>Kurslar</span></div>
+<div class="stat"><b data-count="20">0</b><span>Ustozlar</span></div>
+<div class="stat"><b data-count="5">0</b><span>Yillik tajriba</span></div>
+</div>
+</section>
+
+<!-- PROGRESS -->
+<section>
+<div class="section-head">
+<h2>📈 O‘quvchi progressi</h2>
+<div class="line"></div>
+<p>O‘quv jarayonini kuzatish uchun namunaviy progress.</p>
+</div>
+
+<div class="progress-wrap">
+<div style="display:flex;justify-content:space-between;margin-bottom:10px">
+<b>Web dasturlash</b><span id="progressText">72%</span>
+</div>
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+<br>
+<button class="btn primary" onclick="increaseProgress()">Progressni oshirish</button>
+<button class="btn secondary" onclick="resetProgress()">Reset</button>
+</div>
+</section>
+
+<!-- TEST -->
+<section id="test">
+<div class="section-head">
+<h2>🧠 Mini test</h2>
+<div class="line"></div>
+<p>Bilimingizni sinab ko‘ring.</p>
+</div>
+
+<div class="test-box">
+<div class="test-info">
+<span id="questionNumber">1 / 10</span>
+<span>Ball: <b id="score">0</b></span>
+</div>
+
+<div class="question" id="question">HTML nima uchun ishlatiladi?</div>
+<div class="answers" id="answers"></div>
+<br>
+<button class="btn primary" onclick="nextQuestion()">Keyingi savol →</button>
+<button class="btn secondary" onclick="restartTest()">Qayta boshlash</button>
+</div>
+</section>
+
+<!-- FAQ -->
+<section>
+<div class="section-head">
+<h2>❓ Ko‘p beriladigan savollar</h2>
+<div class="line"></div>
+</div>
+
+<div class="faq">
+
+<div class="faq-item">
+<button class="faq-q" onclick="faq(this)">Kursga qanday yozilaman? <span>+</span></button>
+<div class="faq-a">Aloqa bo‘limidagi forma orqali ma’lumot qoldirishingiz mumkin.</div>
+</div>
+
+<div class="faq-item">
+<button class="faq-q" onclick="faq(this)">Darslar amaliymi? <span>+</span></button>
+<div class="faq-a">Ha, kurslarda amaliy topshiriqlar va loyihalarga e’tibor beriladi.</div>
+</div>
+
+<div class="faq-item">
+<button class="faq-q" onclick="faq(this)">Qaysi kursdan boshlash kerak? <span>+</span></button>
+<div class="faq-a">Boshlang‘ich bilimga qarab mos kurs tanlash mumkin.</div>
+</div>
+
+<div class="faq-item">
+<button class="faq-q" onclick="faq(this)">Kompyuterim bo‘lmasa-chi? <span>+</span></button>
+<div class="faq-a">Bu masalani markaz bilan bog‘lanib aniqlashtirishingiz mumkin.</div>
+</div>
+
+<div class="faq-item">
+<button class="faq-q" onclick="faq(this)">Web dasturlashda nimalar o‘rganiladi? <span>+</span></button>
+<div class="faq-a">HTML, CSS, JavaScript va web sahifa yaratish asoslari.</div>
+</div>
+
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+<div class="section-head">
+<h2>📞 Biz bilan bog‘laning</h2>
+<div class="line"></div>
+<p>Kurs haqida ma’lumot olish uchun forma to‘ldiring.</p>
+</div>
+
+<div class="contact-box">
+<form id="contactForm" onsubmit="sendForm(event)">
+
+<div class="form-grid">
+
+<div class="field">
+<label>Ismingiz</label>
+<input id="name" required placeholder="Ismingiz">
+</div>
+
+<div class="field">
+<label>Telefon</label>
+<input id="phone" required placeholder="+998 __ ___ __ __">
+</div>
+
+<div class="field">
+<label>Kurs</label>
+<select id="course">
+<option>Kompyuter savodxonligi</option>
+<option>Web dasturlash</option>
+<option>Grafik dizayn</option>
+<option>Sun’iy intellekt</option>
+<option>Dasturlash</option>
+<option>3D Max</option>
+</select>
+</div>
+
+<div class="field">
+<label>Vaqt</label>
+<select>
+<option>Ertalab</option>
+<option>Tushdan keyin</option>
+<option>Kechqurun</option>
+</select>
+</div>
+
+<div class="field full">
+<label>Xabar</label>
+<textarea id="message" placeholder="Savolingiz..."></textarea>
+</div>
+
+<div class="field full">
+<button class="btn primary" type="submit">📨 Ariza yuborish</button>
+</div>
+
+</div>
+</form>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-grid">
+
+<div>
+<h3 class="logo">YUKES</h3>
+<p>
+Kompyuter bilimlari va zamonaviy texnologiyalar
+sari ishonchli qadam.
+</p>
+</div>
+
+<div>
+<h3>Sayt</h3>
+<ul>
+<li><a href="#home">Bosh sahifa</a></li>
+<li><a href="#courses">Kurslar</a></li>
+<li><a href="#teachers">Ustozlar</a></li>
+<li><a href="#contact">Aloqa</a></li>
+</ul>
+</div>
+
+<div>
+<h3>Kurslar</h3>
+<ul>
+<li>Kompyuter</li>
+<li>Web dasturlash</li>
+<li>Grafik dizayn</li>
+<li>Sun’iy intellekt</li>
+</ul>
+</div>
+
+<div>
+<h3>Aloqa</h3>
+<ul>
+<li>📞 +998 95 665 10 06</li>
+<li>📱 Telegram</li>
+<li>📍 O‘zbekiston</li>
+</ul>
+</div>
+
+</div>
+
+<div class="copy">
+© 2026 YUKES EDUCATION — Barcha huquqlar himoyalangan.
+</div>
+</footer>
+
+<button class="top" id="topBtn" onclick="goTop()">↑</button>
+
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="modal-box">
+<button class="close" onclick="closeModal()">×</button>
+<div id="modalContent"></div>
+</div>
+</div>
+
+<script>
+
+/* 1 LOADER */
+window.addEventListener("load",()=>{
+setTimeout(()=>document.querySelector(".loader").classList.add("hide"),700);
+});
+
+/* 2 CURSOR */
+document.addEventListener("mousemove",e=>{
+document.querySelector(".cursor").style.left=e.clientX+"px";
+document.querySelector(".cursor").style.top=e.clientY+"px";
+});
+
+/* 3 NAV SCROLL */
+window.addEventListener("scroll",()=>{
+document.querySelector(".nav").classList.toggle("scrolled",scrollY>30);
+document.getElementById("topBtn").style.display=scrollY>500?"block":"none";
+});
+
+/* 4 TOP */
+function goTop(){scrollTo({top:0,behavior:"smooth"})}
+
+/* 5 THEME */
+function toggleTheme(){
+document.body.classList.toggle("light");
+localStorage.setItem("theme",document.body.classList.contains("light")?"light":"dark");
+showToast(document.body.classList.contains("light")?"☀️ Yorug‘ rejim":"🌙 Tungi rejim");
+}
+if(localStorage.getItem("theme")==="light")document.body.classList.add("light");
+
+/* 6 MOBILE */
+function mobileMenu(){
+let n=document.querySelector(".navlinks");
+n.style.display=n.style.display==="flex"?"none":"flex";
+n.style.position="absolute";
+n.style.top="74px";
+n.style.right="5%";
+n.style.background="var(--card)";
+n.style.padding="20px";
+n.style.borderRadius="15px";
+n.style.flexDirection="column";
+}
+
+/* 7 TOAST */
+function showToast(msg){
+let t=document.getElementById("toast");
+t.textContent=msg;
+t.classList.add("show");
+clearTimeout(window.toastTimer);
+window.toastTimer=setTimeout(()=>t.classList.remove("show"),3000);
+}
+
+/* 8 MODAL */
+function openModal(html){
+document.getElementById("modalContent").innerHTML=html;
+document.getElementById("modal").classList.add("show");
+}
+function closeModal(){
+document.getElementById("modal").classList.remove("show");
+}
+
+/* 9 VIDEO */
+function openVideo(){
+openModal(`
+<h2>🎬 YUKES EDUCATION</h2>
+<br>
+<div style="aspect-ratio:16/9;background:#020814;border-radius:15px;display:grid;place-items:center">
+<div style="font-size:60px;color:#00d9ff">▶</div>
+</div>
+<br>
+<p style="color:var(--muted)">Bu joyga keyinchalik YUKES tanishtiruv videosini joylashtirishingiz mumkin.</p>
+`);
+}
+
+/* 10 COURSE INFO */
+function courseInfo(name){
+openModal(`
+<h2>📚 ${name}</h2>
+<br>
+<p style="color:var(--muted)">
+Ushbu kurs haqida batafsil ma’lumot olish uchun
+aloqa formasidan foydalanishingiz mumkin.
+</p>
+<br>
+<button class="btn primary" onclick="closeModal();location.href='#contact'">
+Kursga yozilish
+</button>
+`);
+}
+
+/* 11 TEACHER */
+function teacherInfo(name){
+openModal(`
+<h2>👨‍🏫 ${name}</h2>
+<br>
+<p style="color:var(--muted)">
+Professional ustoz profili. Bu joyga ustoz haqida
+batafsil ma’lumot yozishingiz mumkin.
+</p>
+`);
+}
+
+/* 12 SEARCH */
+function searchCourses(){
+let q=document.getElementById("courseSearch").value.toLowerCase();
+document.querySelectorAll(".course").forEach(c=>{
+c.style.display=c.dataset.name.includes(q)?"block":"none";
+});
+}
+
+/* 13 CLEAR SEARCH */
+function clearSearch(){
+document.getElementById("courseSearch").value="";
+searchCourses();
+}
+
+/* 14 FILTER */
+function filterCourses(cat,btn){
+document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));
+btn.classList.add("active");
+document.querySelectorAll(".course").forEach(c=>{
+c.style.display=(cat==="all"||c.dataset.cat===cat)?"block":"none";
+});
+}
+
+/* 15 STATS */
+const stats=document.querySelectorAll("[data-count]");
+const statObserver=new IntersectionObserver(entries=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+let el=e.target,target=+el.dataset.count,n=0;
+let timer=setInterval(()=>{
+n+=Math.ceil(target/40);
+if(n>=target){n=target;clearInterval(timer)}
+el.textContent=n+"+";
+},30);
+statObserver.unobserve(el);
+}
+});
+},{threshold:.5});
+stats.forEach(x=>statObserver.observe(x));
+
+/* 16 PROGRESS */
+let progress=72;
+function increaseProgress(){
+progress=Math.min(100,progress+5);
+document.getElementById("progressFill").style.width=progress+"%";
+document.getElementById("progressText").textContent=progress+"%";
+showToast("📈 Progress: "+progress+"%");
+}
+function resetProgress(){
+progress=72;
+document.getElementById("progressFill").style.width="72%";
+document.getElementById("progressText").textContent="72%";
+}
+
+/* 17 FAQ */
+function faq(btn){
+let item=btn.parentElement;
+item.classList.toggle("open");
+btn.querySelector("span").textContent=item.classList.contains("open")?"−":"+";
+}
+
+/* 18 CONTACT */
+function sendForm(e){
+e.preventDefault();
+let name=document.getElementById("name").value;
+let course=document.getElementById("course").value;
+showToast("✅ Rahmat, "+name+"! Arizangiz tayyorlandi.");
+openModal(`
+<h2>✅ Ariza qabul qilindi</h2>
+<br>
+<p style="color:var(--muted)">
+Hurmatli <b>${name}</b>!<br><br>
+Tanlangan kurs: <b>${course}</b>
+<br><br>
+Siz bilan bog‘lanish uchun ma’lumotlaringiz qabul qilindi.
+</p>
+`);
+document.getElementById("contactForm").reset();
+}
+
+/* 19 TEST */
+const questions=[
+{
+q:"HTML nima uchun ishlatiladi?",
+a:["Web sahifa tuzilishi","Rasm tahrirlash","Video montaj","Antivirus"],
+c:0
+},
+{
+q:"CSS nima uchun kerak?",
+a:["Dizayn","Database","Antivirus","Audio"],
+c:0
+},
+{
+q:"JavaScript nima?",
+a:["Dasturlash tili","Monitor","Operatsion tizim","Printer"],
+c:0
+},
+{
+q:"Kompyuterning asosiy hisoblash qurilmasi?",
+a:["CPU","Mouse","Keyboard","Monitor"],
+c:0
+},
+{
+q:"RAM nima?",
+a:["Tezkor xotira","Qattiq disk","Printer","Brauzer"],
+c:0
+},
+{
+q:"Photoshop asosan nima uchun ishlatiladi?",
+a:["Rasm tahrirlash","Kod yozish","Musiqa tinglash","Email"],
+c:0
+},
+{
+q:"Google Chrome nima?",
+a:["Brauzer","Antivirus","Printer","OS"],
+c:0
+},
+{
+q:"AI nimani anglatadi?",
+a:["Sun’iy intellekt","Audio interface","Internet adapter","Image archive"],
+c:0
+},
+{
+q:"URL nima?",
+a:["Web manzil","Video","Klaviatura","Virus"],
+c:0
+},
+{
+q:"Web sahifani saqlash uchun asosiy fayl nomi ko‘pincha?",
+a:["index.html","photo.jpg","music.mp3","game.exe"],
+c:0
+}
+];
+
+let qIndex=0,score=0,answered=false;
+
+function loadQuestion(){
+let q=questions[qIndex];
+document.getElementById("questionNumber").textContent=(qIndex+1)+" / "+questions.length;
+document.getElementById("question").textContent=q.q;
+let box=document.getElementById("answers");
+box.innerHTML="";
+answered=false;
+q.a.forEach((a,i)=>{
+let b=document.createElement("button");
+b.className="answer";
+b.textContent=a;
+b.onclick=()=>answer(i,b);
+box.appendChild(b);
+});
+}
+function answer(i,b){
+if(answered)return;
+answered=true;
+let q=questions[qIndex];
+if(i===q.c){
+b.classList.add("correct");
+score++;
+document.getElementById("score").textContent=score;
+showToast("✅ To‘g‘ri!");
+}else{
+b.classList.add("wrong");
+document.querySelectorAll(".answer")[q.c].classList.add("correct");
+showToast("❌ Noto‘g‘ri!");
+}
+}
+function nextQuestion(){
+if(!answered){
+showToast("Avval javobni tanlang!");
+return;
+}
+if(qIndex<questions.length-1){
+qIndex++;
+loadQuestion();
+}else{
+openModal(`
+<h2>🏆 Test tugadi!</h2><br>
+<p>Sizning natijangiz:</p>
+<h1 style="color:var(--blue);font-size:55px">${score}/${questions.length}</h1>
+<br>
+<button class="btn primary" onclick="closeModal();restartTest()">Qayta ishlash</button>
+`);
+}
+}
+function restartTest(){
+qIndex=0;score=0;
+document.getElementById("score").textContent="0";
+loadQuestion();
+}
+
+/* 20 KEYBOARD */
+document.addEventListener("keydown",e=>{
+if(e.key==="Escape")closeModal();
+if(e.key==="Home"&&!e.ctrlKey)goTop();
+});
+
+/* 21 MODAL OUTSIDE CLICK */
+document.getElementById("modal").addEventListener("click",e=>{
+if(e.target.id==="modal")closeModal();
+});
+
+/* 22 ACTIVE NAV */
+const sections=document.querySelectorAll("section[id]");
+const links=document.querySelectorAll(".navlinks a");
+window.addEventListener("scroll",()=>{
+let current="";
+sections.forEach(s=>{
+if(scrollY>=s.offsetTop-150)current=s.id;
+});
+links.forEach(a=>{
+a.classList.toggle("active",a.getAttribute("href")==="#"+current);
+});
+});
+
+/* START */
+loadQuestion();
+
+</script>
+
+</body>
+</html>
